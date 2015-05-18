@@ -1,6 +1,7 @@
-package com.reven.englishnumber;
+package com.reven.englishnumber.util;
 
 import android.util.Log;
+import com.reven.englishnumber.BuildConfig;
 
 /**
  * Created by CS on 2014/10/8 18:05.

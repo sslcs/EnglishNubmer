@@ -1,13 +1,12 @@
-package com.reven.englishnumber;
+package com.reven.englishnumber.ui;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import com.reven.englishnumber.R;
 
-
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends SoundActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +20,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void replace(Fragment fragment, boolean enableBack) {
-        FragmentManager fm = getSupportFragmentManager();
+        FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.container, fragment);
         if (enableBack) {
