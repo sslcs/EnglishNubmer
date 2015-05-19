@@ -5,10 +5,12 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.TextView;
 import com.reven.englishnumber.R;
 import com.reven.englishnumber.util.NumberUtil;
@@ -24,10 +26,12 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private Random mRandom;
     private int mNumber;
     private int mLevel = 100;
+    private int mCountRight, mCountWrong;
 
-    private TextView tvNumber;
-    private View vChoices;
-    private Button btn_0, btn_1, btn_2, btn_3;
+    private TextView tvNumber, tvRight, tvWrong;
+    private View vChoices, vInfo;
+    private Button btn_0, btn_1, btn_2, btn_3, btnStart;
+    private Chronometer mChronometer;
 
     private ObjectAnimator mNextAnimator;
 
@@ -44,13 +48,33 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     private void initLayout(final View view) {
         vChoices = view.findViewById(R.id.v_choices);
+        vInfo = view.findViewById(R.id.v_info);
+        mChronometer = (Chronometer) view.findViewById(R.id.chronometer);
+        mChronometer.setFormat("时间：%s");
 
+        tvRight = (TextView) view.findViewById(R.id.tv_right);
+        tvWrong = (TextView) view.findViewById(R.id.tv_wrong);
         tvNumber = (TextView) view.findViewById(R.id.tv_number);
-        tvNumber.setOnClickListener(new View.OnClickListener() {
+
+        btnStart = (Button) view.findViewById(R.id.btn_start);
+        btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tvNumber.setEnabled(false);
-                start();
+                if (btnStart.getText().equals("Start")) {
+                    btnStart.setText("Stop");
+                    start();
+                }
+                else {
+                    btnStart.setText("Start");
+                    stop();
+                }
+                btnStart.setEnabled(false);
+                btnStart.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        btnStart.setEnabled(true);
+                    }
+                }, 3000);
             }
         });
 
@@ -98,14 +122,28 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         btn_3.setText(choices.get(3) + "");
     }
 
+    private void stop() {
+        mChronometer.stop();
+        vChoices.setVisibility(View.INVISIBLE);
+        tvNumber.setText("");
+    }
+
     private void start() {
+        mChronometer.setBase(SystemClock.elapsedRealtime());
+        mCountRight = 0;
+        mCountWrong = 0;
+        tvRight.setText("正确：0");
+        tvWrong.setText("错误：0");
         final AnimatorListenerAdapter listenerGo = new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 vChoices.setVisibility(View.VISIBLE);
+                vInfo.setVisibility(View.VISIBLE);
                 tvNumber.setAlpha(1);
                 tvNumber.setScaleX(1);
                 tvNumber.setScaleY(1);
+
+                mChronometer.start();
                 next();
             }
         };
@@ -148,10 +186,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         if (mNumber == Integer.parseInt(btn.getText().toString())) {
             next();
             mHost.playSound(R.raw.right);
+            tvRight.setText("正确：" + (++mCountRight));
         }
         else {
             ShakeAnimator.shake(v);
             mHost.playSound(R.raw.wrong);
+            tvWrong.setText("错误：" + (++mCountWrong));
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mChronometer.stop();
     }
 }

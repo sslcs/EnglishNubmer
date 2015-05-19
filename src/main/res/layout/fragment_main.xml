@@ -3,15 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".MainActivityFragment">
+    tools:context=".MainActivity">
+    <LinearLayout
+        android:id="@+id/v_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+        <Chronometer
+            android:id="@+id/chronometer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+        <TextView
+            android:id="@+id/tv_right"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#333"
+            android:textSize="16sp"
+            android:text="正确：0"/>
+        <TextView
+            android:id="@+id/tv_wrong"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#333"
+            android:textSize="16sp"
+            android:text="错误：0"/>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/holo_green_dark"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:text="Start"/>
     <LinearLayout
         android:id="@+id/v_choices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@id/btn_start"
         android:orientation="vertical"
-        android:visibility="invisible"
-        android:layout_gravity="bottom">
+        android:visibility="invisible">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -51,7 +87,6 @@
     </LinearLayout>
     <TextView
         android:id="@+id/tv_number"
-        android:text="@string/tip"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:layout_above="@id/v_choices"
