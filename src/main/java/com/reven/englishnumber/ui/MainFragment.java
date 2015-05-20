@@ -92,7 +92,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     private void next() {
         mNumber = mRandom.nextInt(mLevel);
-        tvNumber.setText(NumberUtil.getNumberString(mNumber));
+//        tvNumber.setText(NumberUtil.getNumberString(mNumber));
+        tvNumber.setText(NumberUtil.getGerman(mNumber));
         setChoices(mNumber);
         mNextAnimator.start();
     }
