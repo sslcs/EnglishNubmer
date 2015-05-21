@@ -44,7 +44,7 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
         android:background="@android:color/holo_green_dark"
-        android:text="Start"
+        android:text="开始"
         android:textColor="@android:color/white"
         android:textSize="24sp" />
 

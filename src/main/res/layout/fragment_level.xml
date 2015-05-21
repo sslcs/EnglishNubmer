@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:id="@+id/btn_english"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:text="英语"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btn_german"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/holo_green_dark"
+            android:text="德语"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_level_4"
+        style="@style/BtnLevel"
+        android:text="学神" />
+
+    <Button
+        android:id="@+id/btn_level_3"
+        style="@style/BtnLevel"
+        android:text="学霸" />
+
+    <Button
+        android:id="@+id/btn_level_2"
+        style="@style/BtnLevel"
+        android:text="学民" />
+
+    <Button
+        android:id="@+id/btn_level_1"
+        style="@style/BtnLevel"
+        android:text="学酥" />
+
+    <Button
+        android:id="@+id/btn_level_0"
+        style="@style/BtnLevel"
+        android:text="学渣" />
+
+</LinearLayout>

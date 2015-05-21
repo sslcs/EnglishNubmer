@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+
 import com.reven.englishnumber.R;
 import com.reven.englishnumber.util.NumberUtil;
 
@@ -26,6 +27,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private Random mRandom;
     private int mNumber;
     private int mLevel = 100;
+    private int mLanguage = 1;
     private int mCountRight, mCountWrong;
 
     private TextView tvNumber, tvRight, tvWrong;
@@ -35,8 +37,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     private ObjectAnimator mNextAnimator;
 
-    public MainFragment() {
+    public static MainFragment newInstance(int level, int language) {
+        MainFragment fragment = new MainFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("level", level);
+        bundle.putInt("language", language);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         mRandom = new Random(System.currentTimeMillis());
+        mLevel = getArguments().getInt("level");
+        mLanguage = getArguments().getInt("language");
     }
 
     @Override
@@ -55,17 +70,18 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         tvRight = (TextView) view.findViewById(R.id.tv_right);
         tvWrong = (TextView) view.findViewById(R.id.tv_wrong);
         tvNumber = (TextView) view.findViewById(R.id.tv_number);
+        String[] strLevel = {"学渣","学酥","学民","学霸","学神"};
+        tvNumber.setText(strLevel[mLevel]+"加油!!!");
 
         btnStart = (Button) view.findViewById(R.id.btn_start);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnStart.getText().equals("Start")) {
-                    btnStart.setText("Stop");
+                if (btnStart.getText().equals("开始")) {
+                    btnStart.setText("停止");
                     start();
-                }
-                else {
-                    btnStart.setText("Start");
+                } else {
+                    btnStart.setText("开始");
                     stop();
                 }
                 btnStart.setEnabled(false);
@@ -91,19 +107,36 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void next() {
-        mNumber = mRandom.nextInt(mLevel);
-//        tvNumber.setText(NumberUtil.getNumberString(mNumber));
-        tvNumber.setText(NumberUtil.getGerman(mNumber));
+        mNumber = getRandomNumber();
+        tvNumber.setText(NumberUtil.getNumberString(mNumber, mLanguage));
         setChoices(mNumber);
         mNextAnimator.start();
+    }
+
+    private int getRandomNumber() {
+        switch (mLevel) {
+            case 0:
+                return mRandom.nextInt(10);
+            case 1:
+                return mRandom.nextInt(20);
+            case 2:
+                return mRandom.nextInt(80) + 20;
+        }
+        return mRandom.nextInt(100);
     }
 
     private void setChoices(int number) {
         ArrayList<Integer> choices = new ArrayList<>(4);
         choices.add(number);
+        int delta;
+        if (number < 10) {
+            delta = 0;
+        } else {
+            delta = number - 10;
+        }
         for (int i = 1; i < 4; i++) {
             while (true) {
-                int tmp = mRandom.nextInt(mLevel);
+                int tmp = mRandom.nextInt(10) + delta;
                 int j = 0;
                 for (; j < i; j++) {
                     if (tmp == choices.get(j)) {
@@ -188,8 +221,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
             next();
             mHost.playSound(R.raw.right);
             tvRight.setText("正确：" + (++mCountRight));
-        }
-        else {
+        } else {
             ShakeAnimator.shake(v);
             mHost.playSound(R.raw.wrong);
             tvWrong.setText("错误：" + (++mCountWrong));

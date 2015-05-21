@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+
 import com.reven.englishnumber.R;
 
 public class MainActivity extends SoundActivity {
@@ -16,7 +17,7 @@ public class MainActivity extends SoundActivity {
     }
 
     private void initLayout() {
-        replace(new MainFragment(), false);
+        replace(new LevelFragment(), false);
     }
 
     public void replace(Fragment fragment, boolean enableBack) {

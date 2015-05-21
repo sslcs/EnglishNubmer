@@ -11,7 +11,7 @@ public class StoreUtil {
     private SharedPreferences mPreferences;
 
     public StoreUtil(Context context) {
-        this(context, "abc360prepare");
+        this(context, "store");
     }
 
     public StoreUtil(Context context, String name) {
