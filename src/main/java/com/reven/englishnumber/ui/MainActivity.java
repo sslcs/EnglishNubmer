@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.view.View;
 
 import com.reven.englishnumber.R;
 
@@ -28,5 +29,9 @@ public class MainActivity extends SoundActivity {
             ft.addToBackStack(null);
         }
         ft.commitAllowingStateLoss();
+    }
+
+    public void onBackPressed(View view) {
+        onBackPressed();
     }
 }

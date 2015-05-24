@@ -4,20 +4,17 @@
     android:layout_height="match_parent"
     android:padding="@dimen/activity_horizontal_margin"
     tools:context=".MainActivity">
-
     <LinearLayout
         android:id="@+id/v_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:visibility="gone">
-
         <Chronometer
             android:id="@+id/chronometer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
+            android:layout_weight="1"/>
         <TextView
             android:id="@+id/tv_right"
             android:layout_width="0dp"
@@ -25,8 +22,7 @@
             android:layout_weight="1"
             android:text="正确：0"
             android:textColor="#333"
-            android:textSize="16sp" />
-
+            android:textSize="16sp"/>
         <TextView
             android:id="@+id/tv_wrong"
             android:layout_width="0dp"
@@ -34,78 +30,75 @@
             android:layout_weight="1"
             android:text="错误：0"
             android:textColor="#333"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_start"
+    <LinearLayout
+        android:id="@+id/v_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="5dp"
-        android:background="@android:color/holo_green_dark"
-        android:text="开始"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
-
+        android:layout_marginTop="20dp">
+        <Button
+            android:id="@+id/btn_back"
+            style="@style/BtnWeight"
+            android:layout_marginRight="10dp"
+            android:onClick="onBackPressed"
+            android:text="返回"/>
+        <Button
+            android:id="@+id/btn_start"
+            style="@style/BtnWeight"
+            android:text="开始"/>
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/v_choices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/btn_start"
+        android:layout_above="@id/v_bottom"
         android:orientation="vertical"
         android:visibility="invisible">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp">
             <com.reven.englishnumber.ui.RippleView style="@style/RippleChoice">
-
                 <Button
                     android:id="@+id/btn_0"
                     style="@style/BtnChoice"
-                    android:gravity="right|center_vertical" />
+                    android:layout_marginRight="5dp"/>
             </com.reven.englishnumber.ui.RippleView>
-
             <com.reven.englishnumber.ui.RippleView style="@style/RippleChoice">
-
                 <Button
                     android:id="@+id/btn_1"
                     style="@style/BtnChoice"
-                    android:gravity="left|center_vertical" />
+                    android:layout_marginLeft="5dp"/>
             </com.reven.englishnumber.ui.RippleView>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp">
             <com.reven.englishnumber.ui.RippleView style="@style/RippleChoice">
-
                 <Button
                     android:id="@+id/btn_2"
                     style="@style/BtnChoice"
-                    android:gravity="right|center_vertical" />
+                    android:layout_marginRight="5dp"/>
             </com.reven.englishnumber.ui.RippleView>
-
             <com.reven.englishnumber.ui.RippleView style="@style/RippleChoice">
-
                 <Button
                     android:id="@+id/btn_3"
                     style="@style/BtnChoice"
-                    android:gravity="left|center_vertical" />
+                    android:layout_marginLeft="5dp"/>
             </com.reven.englishnumber.ui.RippleView>
         </LinearLayout>
     </LinearLayout>
-
     <TextView
         android:id="@+id/tv_number"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_above="@id/v_choices"
+        android:layout_marginBottom="10dp"
         android:gravity="center"
         android:textColor="#333"
         android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 </RelativeLayout>

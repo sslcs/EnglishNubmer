@@ -70,17 +70,21 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         tvRight = (TextView) view.findViewById(R.id.tv_right);
         tvWrong = (TextView) view.findViewById(R.id.tv_wrong);
         tvNumber = (TextView) view.findViewById(R.id.tv_number);
-        String[] strLevel = {"学渣","学酥","学民","学霸","学神"};
-        tvNumber.setText(strLevel[mLevel]+"加油!!!");
+        String[] strLevel = {"学渣", "学酥", "学民", "学霸", "学神"};
+        tvNumber.setText(strLevel[mLevel] + "加油!!!");
+
+        final View btnBack = view.findViewById(R.id.btn_back);
 
         btnStart = (Button) view.findViewById(R.id.btn_start);
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (btnStart.getText().equals("开始")) {
+                    btnBack.setVisibility(View.GONE);
                     btnStart.setText("停止");
                     start();
                 } else {
+                    btnBack.setVisibility(View.VISIBLE);
                     btnStart.setText("开始");
                     stop();
                 }
@@ -121,8 +125,10 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
                 return mRandom.nextInt(20);
             case 2:
                 return mRandom.nextInt(80) + 20;
+            case 3:
+                return mRandom.nextInt(999999900) + 100;
         }
-        return mRandom.nextInt(100);
+        return mRandom.nextInt(Integer.MAX_VALUE);
     }
 
     private void setChoices(int number) {
@@ -150,10 +156,14 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
             }
         }
         Collections.shuffle(choices);
-        btn_0.setText(choices.get(0) + "");
-        btn_1.setText(choices.get(1) + "");
-        btn_2.setText(choices.get(2) + "");
-        btn_3.setText(choices.get(3) + "");
+        btn_0.setText(NumberUtil.getNumber(choices.get(0)));
+        btn_1.setText(NumberUtil.getNumber(choices.get(1)));
+        btn_2.setText(NumberUtil.getNumber(choices.get(2)));
+        btn_3.setText(NumberUtil.getNumber(choices.get(3)));
+        btn_0.setTag(choices.get(0));
+        btn_1.setTag(choices.get(1));
+        btn_2.setTag(choices.get(2));
+        btn_3.setTag(choices.get(3));
     }
 
     private void stop() {
@@ -216,8 +226,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Button btn = (Button) v;
-        if (mNumber == Integer.parseInt(btn.getText().toString())) {
+        int number = (int) v.getTag();
+        if (mNumber == number) {
             next();
             mHost.playSound(R.raw.right);
             tvRight.setText("正确：" + (++mCountRight));
