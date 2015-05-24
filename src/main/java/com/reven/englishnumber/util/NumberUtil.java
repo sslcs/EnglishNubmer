@@ -11,7 +11,6 @@ public class NumberUtil {
     private static String[] german90 = {"zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"};
     private static String[] german100 = {"hundert", "tausend", "Million", "milliarde"};
 
-
     private static String getEnglish(int number) {
         StringBuilder sb = new StringBuilder();
         if (number < 20) {
@@ -87,18 +86,16 @@ public class NumberUtil {
         return getEnglish(number);
     }
 
-    public static String getNumber(int number) {
-        StringBuilder sb = new StringBuilder(number + "");
-        if (number < 1000) {
-        } else if (number < 1000000) {
+    public static String getNumber(String number) {
+        StringBuilder sb = new StringBuilder(number);
+        if (sb.length() > 3) {
             sb.insert(sb.length() - 3, ",");
-        } else if (number < 1000000000) {
-            sb.insert(sb.length() - 6, ",");
-            sb.insert(sb.length() - 3, ",");
-        } else {
-            sb.insert(sb.length() - 9, ",");
-            sb.insert(sb.length() - 6, ",");
-            sb.insert(sb.length() - 3, ",");
+        }
+        if (sb.length() > 7) {
+            sb.insert(sb.length() - 7, ",");
+        }
+        if (sb.length() > 11) {
+            sb.insert(sb.length() - 11, ",");
         }
         return sb.toString();
     }

@@ -26,7 +26,7 @@ import java.util.Random;
 public class MainFragment extends BaseFragment implements View.OnClickListener {
     private Random mRandom;
     private int mNumber;
-    private int mLevel = 100;
+    private int mLevel = 0;
     private int mLanguage = 1;
     private int mCountRight, mCountWrong;
 
@@ -35,6 +35,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private Button btn_0, btn_1, btn_2, btn_3, btnStart;
     private Chronometer mChronometer;
 
+    private String[] strLevel = {"学渣", "学酥", "学民", "学霸", "学神"};
     private ObjectAnimator mNextAnimator;
 
     public static MainFragment newInstance(int level, int language) {
@@ -70,7 +71,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         tvRight = (TextView) view.findViewById(R.id.tv_right);
         tvWrong = (TextView) view.findViewById(R.id.tv_wrong);
         tvNumber = (TextView) view.findViewById(R.id.tv_number);
-        String[] strLevel = {"学渣", "学酥", "学民", "学霸", "学神"};
         tvNumber.setText(strLevel[mLevel] + "加油!!!");
 
         final View btnBack = view.findViewById(R.id.btn_back);
@@ -113,48 +113,36 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     private void next() {
         mNumber = getRandomNumber();
         tvNumber.setText(NumberUtil.getNumberString(mNumber, mLanguage));
-        setChoices(mNumber);
+        setChoices();
         mNextAnimator.start();
     }
 
     private int getRandomNumber() {
         switch (mLevel) {
             case 0:
-                return mRandom.nextInt(10);
+                return mRandom.nextInt(11);
             case 1:
-                return mRandom.nextInt(20);
+                return mRandom.nextInt(89) + 11;
             case 2:
-                return mRandom.nextInt(80) + 20;
+                return mRandom.nextInt(999900) + 100;
             case 3:
-                return mRandom.nextInt(999999900) + 100;
+                return mRandom.nextInt(999000000) + 1000000;
+            default:
+                return mRandom.nextInt(Integer.MAX_VALUE);
         }
-        return mRandom.nextInt(Integer.MAX_VALUE);
     }
 
-    private void setChoices(int number) {
-        ArrayList<Integer> choices = new ArrayList<>(4);
-        choices.add(number);
-        int delta;
-        if (number < 10) {
-            delta = 0;
+    private void setChoices() {
+        ArrayList<String> choices = new ArrayList<>(4);
+        choices.add(mNumber + "");
+        if (mNumber < 11) {
+            getRandom10(choices);
+        } else if (mNumber < 100) {
+            getRandom100(choices);
         } else {
-            delta = number - 10;
+            getRandom1000(choices);
         }
-        for (int i = 1; i < 4; i++) {
-            while (true) {
-                int tmp = mRandom.nextInt(10) + delta;
-                int j = 0;
-                for (; j < i; j++) {
-                    if (tmp == choices.get(j)) {
-                        break;
-                    }
-                }
-                if (j == i) {
-                    choices.add(tmp);
-                    break;
-                }
-            }
-        }
+
         Collections.shuffle(choices);
         btn_0.setText(NumberUtil.getNumber(choices.get(0)));
         btn_1.setText(NumberUtil.getNumber(choices.get(1)));
@@ -166,7 +154,70 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         btn_3.setTag(choices.get(3));
     }
 
+    private void getRandom10(ArrayList<String> choices) {
+        while (choices.size() != 4) {
+            int tmp = mRandom.nextInt(11);
+            int size = choices.size();
+            int j = 0;
+            for (; j < size; j++) {
+                if (Integer.toString(tmp).equals(choices.get(j))) {
+                    break;
+                }
+            }
+            if (j == size) {
+                choices.add(tmp + "");
+            }
+        }
+    }
+
+    private void getRandom100(ArrayList<String> choices) {
+        int decade = mNumber / 10;
+        int rest = mNumber % 10;
+        int tmpDecade, tmpRest;
+        while (true) {
+            tmpDecade = mRandom.nextInt(9) + 1;
+            if (tmpDecade != decade) {
+                choices.add(Integer.toString(tmpDecade * 10 + rest));
+                break;
+            }
+        }
+        while (true) {
+            tmpRest = mRandom.nextInt(10);
+            if (tmpRest != rest) {
+                choices.add(Integer.toString(mNumber - rest + tmpRest));
+                choices.add(Integer.toString(tmpDecade * 10 + tmpRest));
+                break;
+            }
+        }
+    }
+
+    private void getRandom1000(ArrayList<String> choices) {
+        String strNumber = Integer.toString(mNumber);
+        int first = Integer.valueOf(strNumber.substring(0, 1));
+        int last = mNumber % 10;
+        int tmp;
+        while (true) {
+            tmp = mRandom.nextInt(9) + 1;
+            if (tmp != first) {
+                StringBuilder sb = new StringBuilder(strNumber);
+                sb.replace(0, 1, tmp + "");
+                choices.add(sb.toString());
+                break;
+            }
+        }
+        while (true) {
+            tmp = mRandom.nextInt(10);
+            if (tmp != last) {
+                choices.add(String.valueOf(mNumber - last + tmp));
+                StringBuilder sb = new StringBuilder(choices.get(1));
+                choices.add(sb.replace(sb.length() - 1, sb.length(), tmp + "").toString());
+                break;
+            }
+        }
+    }
+
     private void stop() {
+        tvNumber.setText(strLevel[mLevel] + "加油!!!");
         mChronometer.stop();
         vChoices.setVisibility(View.INVISIBLE);
         tvNumber.setText("");
@@ -226,8 +277,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        int number = (int) v.getTag();
-        if (mNumber == number) {
+        String number = (String) v.getTag();
+        if (String.valueOf(mNumber).equals(number)) {
             next();
             mHost.playSound(R.raw.right);
             tvRight.setText("正确：" + (++mCountRight));
