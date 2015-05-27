@@ -7,7 +7,7 @@ package com.reven.englishnumber.util;
 public class NumberUtil {
     private static String[] english20 = {"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
     private static String[] english90 = {"twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
-    private static String[] german20 = {"null", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"};
+    private static String[] german20 = {"null", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn"};
     private static String[] german90 = {"zwanzig", "dreißig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig"};
     private static String[] german100 = {"hundert", "tausend", "Million", "milliarde"};
 
@@ -75,12 +75,46 @@ public class NumberUtil {
             if (rest > 0) {
                 sb.append(getGerman(rest));
             }
+        } else if (number < 1000000) {
+            int thousand = number / 1000;
+            sb.append(getGerman(thousand)).append("tausend");
+            int rest = number % 1000;
+            if (rest > 0) {
+                sb.append("\n").append(getGerman(rest));
+            }
+        } else if (number < 1000000000) {
+            int million = number / 1000000;
+            if (million == 1) {
+                sb.append("eine");
+            } else {
+                sb.append(getGerman(million));
+            }
+            sb.append(" Million");
+            int rest = number % 1000000;
+            if (rest > 0) {
+                sb.append("\n").append(getGerman(rest));
+            }
+        } else {
+            int billion = number / 1000000000;
+            if (billion == 1) {
+                sb.append("eine");
+            } else {
+                sb.append(getGerman(billion));
+            }
+            sb.append(" Milliarde");
+            int rest = number % 1000000000;
+            if (rest > 0) {
+                sb.append("\n").append(getGerman(rest));
+            }
         }
         return sb.toString();
     }
 
     public static String getNumberString(int number, int language) {
         if (language == 1) {
+            if (number == 1) {
+                return "eins";
+            }
             return getGerman(number);
         }
         return getEnglish(number);
